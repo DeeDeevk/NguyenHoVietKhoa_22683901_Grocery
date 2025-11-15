@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from "react-native";
 import React, { useCallback, useState } from "react";
 import { GroceryItem } from "@/types/GroceryItem";
-import { getAllGrocery, markBought } from "@/db/db";
+import { deleteGrocery, getAllGrocery, markBought } from "@/db/db";
 import { useSQLiteContext } from "expo-sqlite";
 import { useFocusEffect } from "expo-router";
 import GroceryItemCard from "@/components/GroceryItemCard";
@@ -25,6 +25,10 @@ const Home = () => {
     await handleFetchDb();
   };
 
+  const handleDelete = async (id: number) => {
+    await deleteGrocery(db, id).then(() => handleFetchDb());
+  };
+
   return (
     <View className="flex flex-1">
       <FlatList
@@ -34,6 +38,7 @@ const Home = () => {
           <GroceryItemCard
             data={item}
             onMark={() => handleMark(item.id, item.bought)}
+            onDelete={handleDelete}
           />
         )}
       />

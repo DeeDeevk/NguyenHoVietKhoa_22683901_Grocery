@@ -7,9 +7,10 @@ import { useRouter } from "expo-router";
 type Props = {
   data: GroceryItem;
   onMark: (id: number) => void;
+  onDelete: (id: number) => void;
 };
 
-const GroceryItemCard = ({ data, onMark }: Props) => {
+const GroceryItemCard = ({ data, onMark, onDelete }: Props) => {
   const router = useRouter();
   const onPressEdit = () => {
     router.push({ pathname: "/form", params: { id: data.id.toString() } });
@@ -31,7 +32,7 @@ const GroceryItemCard = ({ data, onMark }: Props) => {
           <Button mode="contained" onPress={onPressEdit}>
             Edit
           </Button>
-          <Button mode="contained">Delete</Button>
+          <Button mode="contained" onPress={() => onDelete(data.id)}>Delete</Button>
         </Card.Actions>
       </Card>
     </View>

@@ -51,3 +51,7 @@ export const markBought = async (
     id,
   ]);
 };
+
+export const deleteGrocery = async (db: SQLiteDatabase, id: number) => {
+  await db.runAsync(`DELETE FROM grocery_items WHERE id = ?`, [id]);
+};
