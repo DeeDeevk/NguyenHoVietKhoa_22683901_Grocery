@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { GroceryItem } from "@/types/GroceryItem";
 import { Button, Card } from "react-native-paper";
+import { useRouter } from "expo-router";
 
 type Props = {
   data: GroceryItem;
@@ -9,6 +10,10 @@ type Props = {
 };
 
 const GroceryItemCard = ({ data, onMark }: Props) => {
+  const router = useRouter();
+  const onPressEdit = () => {
+    router.push({ pathname: "/form", params: { id: data.id.toString() } });
+  };
   return (
     <View className="px-4 my-2">
       <Card>
@@ -23,7 +28,9 @@ const GroceryItemCard = ({ data, onMark }: Props) => {
           <Button mode="contained" onPress={() => onMark(data.id)}>
             Mark bought
           </Button>
-          <Button mode="contained">Edit</Button>
+          <Button mode="contained" onPress={onPressEdit}>
+            Edit
+          </Button>
           <Button mode="contained">Delete</Button>
         </Card.Actions>
       </Card>

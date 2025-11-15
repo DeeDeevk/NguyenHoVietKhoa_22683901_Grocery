@@ -1,12 +1,18 @@
 import { View, Text } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Button, RadioButton, TextInput } from "react-native-paper";
 import { GroceryItem } from "@/types/GroceryItem";
-import { insertGrocery } from "@/db/db";
+import { getGroceryId, insertGrocery, updateGrocery } from "@/db/db";
 import { useSQLiteContext } from "expo-sqlite";
-import { useRouter } from "expo-router";
+import {
+  useFocusEffect,
+  useLocalSearchParams,
+  useNavigation,
+  useRouter,
+} from "expo-router";
 
 const Form = () => {
+  const { id } = useLocalSearchParams<{ id?: string }>();
   const db = useSQLiteContext();
   const router = useRouter();
   const [formData, setFormData] = useState<GroceryItem>({} as GroceryItem);
@@ -14,10 +20,13 @@ const Form = () => {
   const quantityRef = useRef(null);
   const categoryRef = useRef(null);
 
+  const navigation = useNavigation();
+
   const handleSave = async () => {
     if (!formData.name || !formData.quantity || !formData.category) return;
 
-    await insertGrocery(db, formData);
+    if (id) await updateGrocery(db, formData);
+    else await insertGrocery(db, formData);
 
     setFormData({} as GroceryItem);
     categoryRef.current?.clear();
@@ -25,6 +34,22 @@ const Form = () => {
     quantityRef.current?.clear();
     router.replace("/home");
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (id) {
+        getGroceryId(db, Number(id)).then((res) => setFormData(res));
+      }
+
+      return () => {
+        setFormData({} as GroceryItem);
+        categoryRef.current?.clear();
+        nameRef.current?.clear();
+        quantityRef.current?.clear();
+        (navigation as any).setParams({ id: undefined });
+      };
+    }, [id, db])
+  );
 
   return (
     <View className="flex flex-1 justify-center items-center">
