@@ -3,6 +3,6 @@ export type GroceryItem = {
   name: string;
   quantity: number;
   category: string;
-  bought: number;
+  bought: boolean;
   created_at: number;
 };

@@ -1,0 +1,29 @@
+import { View, Text } from "react-native";
+import React from "react";
+import { GroceryItem } from "@/types/GroceryItem";
+import { Button, Card } from "react-native-paper";
+
+type Props = {
+  data: GroceryItem;
+};
+
+const GroceryItemCard = ({ data }: Props) => {
+  return (
+    <View className="px-4 my-2">
+      <Card>
+        <Card.Title title={data.name}></Card.Title>
+        <Card.Content>
+          <Text>Category: {data.category}</Text>
+          <Text>Quantity: {data.quantity}</Text>
+          <Text>Created At: {new Date(data.created_at).toDateString()}</Text>
+        </Card.Content>
+        <Card.Actions>
+          <Button mode="contained">Edit</Button>
+          <Button mode="contained">Delete</Button>
+        </Card.Actions>
+      </Card>
+    </View>
+  );
+};
+
+export default GroceryItemCard;

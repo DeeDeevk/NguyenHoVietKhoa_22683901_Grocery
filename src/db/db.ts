@@ -1,3 +1,4 @@
+import { GroceryItem } from "@/types/GroceryItem";
 import { SQLiteDatabase } from "expo-sqlite";
 
 export const initTable = async (db: SQLiteDatabase) => {
@@ -11,4 +12,22 @@ export const initTable = async (db: SQLiteDatabase) => {
               created_at INTEGER
               )
         `);
+};
+
+export const insertGrocery = async (db: SQLiteDatabase, data: GroceryItem) => {
+  await db.runAsync(
+    `INSERT INTO grocery_items (name, quantity, category, bought, created_at) VALUES (?, ?, ?, ?, ?)`,
+    [data.name, data.quantity, data.category, data.bought, Date.now()]
+  );
+};
+
+export const getAllGrocery = async (db: SQLiteDatabase) => {
+  return await db.getAllAsync<GroceryItem>(`SELECT * FROM grocery_items`);
+};
+
+export const getGroceryId = async (db: SQLiteDatabase, id: number) => {
+  return await db.getFirstAsync<GroceryItem>(
+    `SELECT * FROM transactions WHERE id = ?`,
+    [id]
+  );
 };
