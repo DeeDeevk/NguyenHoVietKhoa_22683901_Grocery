@@ -8,12 +8,13 @@ import {
   markBought,
 } from "@/db/db";
 import { useSQLiteContext } from "expo-sqlite";
-import { useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import GroceryItemCard from "@/components/GroceryItemCard";
-import { Button, TextInput } from "react-native-paper";
+import { Button, FAB, TextInput } from "react-native-paper";
 
 const Home = () => {
   const db = useSQLiteContext();
+  const router = useRouter();
   const [groceries, setGroceries] = useState<GroceryItem[]>([]);
   const [nameSearch, setNameSearch] = useState("");
   const [loading, setLoading] = useState(false);
@@ -123,6 +124,12 @@ const Home = () => {
           />
         )}
       />
+      <FAB
+        className="absolute bottom-3 right-3 rounded-full bg-green-500"
+        icon={"plus"}
+        color="white"
+        onPress={() => router.navigate("/form")}
+      ></FAB>
     </View>
   );
 };
