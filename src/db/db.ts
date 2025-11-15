@@ -27,7 +27,27 @@ export const getAllGrocery = async (db: SQLiteDatabase) => {
 
 export const getGroceryId = async (db: SQLiteDatabase, id: number) => {
   return await db.getFirstAsync<GroceryItem>(
-    `SELECT * FROM transactions WHERE id = ?`,
+    `SELECT * FROM grocery_items WHERE id = ?`,
     [id]
   );
+};
+
+export const updateGrocery = async (db: SQLiteDatabase, data: GroceryItem) => {
+  await db.runAsync(
+    `UPDATE grocery_items SET name = ?, quantity = ?, category = ? WHERE id = ?`,
+    [data.name, data.quantity, data.category, data.id]
+  );
+};
+
+export const markBought = async (
+  db: SQLiteDatabase,
+  id: number,
+  current: number
+) => {
+  const newValue = current === 1 ? 0 : 1;
+
+  await db.runAsync(`UPDATE grocery_items SET bought = ? WHERE id = ?`, [
+    newValue,
+    id,
+  ]);
 };

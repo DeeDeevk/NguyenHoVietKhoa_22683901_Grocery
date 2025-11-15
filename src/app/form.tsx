@@ -29,7 +29,7 @@ const Form = () => {
   return (
     <View className="flex flex-1 justify-center items-center">
       <View className="w-full px-4 gap-4">
-        <Text className="text-lg">New Transaction</Text>
+        <Text className="text-lg">New Grocery</Text>
         <TextInput
           label={"Name"}
           value={formData.name ?? ""}
@@ -53,7 +53,7 @@ const Form = () => {
           }
           ref={categoryRef}
         />
-        <RadioButton.Group
+        {/* <RadioButton.Group
           value={formData.bought ? "1" : "0"}
           onValueChange={(value) =>
             setFormData({ ...formData, bought: value === "1" })
@@ -61,7 +61,7 @@ const Form = () => {
         >
           <RadioButton.Item label="Done" value="1" />
           <RadioButton.Item label="Not yet" value="0" />
-        </RadioButton.Group>
+        </RadioButton.Group> */}
         <Button mode="contained" onPress={handleSave}>
           Save
         </Button>
